@@ -3,135 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Management</title>
+  <title>ACE Event Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Poppins', sans-serif; }
+    .logo-white { filter: brightness(0) invert(1); }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .hero-slide.active { opacity: 0.6; }
+
+    .glossy-btn {
+  border-radius: 10px; /* Slightly rounded */
+  background: linear-gradient(145deg, #3b82f6, #1e40af); /* Blue gradient */
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem; /* thinner button */
+  border: 1px solid #1e3a8a; /* outer stroke */
+  box-shadow: 
+    inset 0 2px 4px rgba(255,255,255,0.2), /* inner shadow for glossy effect */
+    0 3px 5px rgba(0,0,0,0.3); /* outer shadow for 3D look */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+}
+
+/* Hover: add thin silver outline */
+.glossy-btn:hover {
+  transform: translateY(-1px);
+  border: 1px solid silver; /* silver outline on hover */
+  box-shadow: 
+    inset 0 2px 4px rgba(255,255,255,0.3),
+    0 4px 6px rgba(0,0,0,0.4);
+}
+
+/* Outlined button style (hover only silver) */
+.glossy-btn-outline {
+  border-radius: 10px;
+  border: 2px solid transparent; /* no outline by default */
+  color: silver;
+  background: transparent;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem; /* thinner */
+  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+/* Hover: show silver outline and change background */
+.glossy-btn-outline:hover {
+  background: #3b82f6;
+  color: white;
+  border: 2px solid silver; /* silver outline on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
   </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900">
+<body class="bg-gray-900 text-gray-100">
   <!-- Navbar -->
-  <nav class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+  <nav class="bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-800">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-blue-600">Eventify</h1>
+      <!-- Logo -->
+      <a href="#">
+        <img src="acelogo.png" alt="ACE Logo" class="h-14 w-auto scale-125 logo-white">
+      </a>
       <ul class="hidden md:flex space-x-8 font-medium">
-        <li><a href="#" class="hover:text-blue-600 transition">Home</a></li>
-        <li><a href="#events" class="hover:text-blue-600 transition">Events</a></li>
-        <li><a href="#about" class="hover:text-blue-600 transition">About</a></li>
-        <li><a href="#contact" class="hover:text-blue-600 transition">Contact</a></li>
+        <li><a href="#" class="hover:text-purple-400 transition">Home</a></li>
+        <li><a href="#events" class="hover:text-purple-400 transition">Events</a></li>
+        <li><a href="#about" class="hover:text-purple-400 transition">About</a></li>
+        <li><a href="#contact" class="hover:text-purple-400 transition">Contact</a></li>
       </ul>
       <div class="hidden md:flex space-x-4">
-        <button class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">Login</button>
-        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Sign Up</button>
+        <button class="glossy-btn-outline">Login</button>
+        <button class="glossy-btn">Signup</button>
       </div>
-      <button class="md:hidden text-gray-700 focus:outline-none">☰</button>
+      <button class="md:hidden text-gray-100 focus:outline-none">☰</button>
     </div>
   </nav>
 
-  <!-- Slider -->
-  <section class="max-w-6xl mx-auto my-12 px-6 relative">
-    <h2 class="text-3xl font-bold mb-6">Upcoming Events</h2>
-    <div class="relative overflow-hidden rounded-2xl shadow-lg">
-      <div class="flex transition-transform duration-700" id="slider">
-        <img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?w=1200" class="min-w-full h-96 object-cover" alt="Music Concert">
-        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200" class="min-w-full h-96 object-cover" alt="Tech Conference">
-        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200" class="min-w-full h-96 object-cover" alt="Festival">
-        <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1200" class="min-w-full h-96 object-cover" alt="Food Festival">
-        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200" class="min-w-full h-96 object-cover" alt="Startup Meetup">
+  <!-- Hero / Slider -->
+  <section class="relative h-[500px] flex items-center justify-center overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?w=1600" class="hero-slide active" alt="slide1">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600" class="hero-slide" alt="slide2">
+    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1600" class="hero-slide" alt="slide3">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-transparent"></div>
+    <div class="relative text-center px-6">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">Unforgettable Events by ACE</h1>
+      <p class="text-lg md:text-xl mb-6 text-gray-300">Workshops, Concerts, Festivals & more – all in one place.</p>
+      <div class="space-x-4">
+        <button class="glossy-btn">Explore Events</button>
+        <button class="glossy-btn-outline">Learn More</button>
       </div>
-      <!-- Slider Buttons -->
-      <button id="prev" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 rounded-full p-2 shadow">⟨</button>
-      <button id="next" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 rounded-full p-2 shadow">⟩</button>
     </div>
   </section>
 
   <!-- Event List -->
   <section id="events" class="max-w-7xl mx-auto my-16 px-6">
-    <h2 class="text-3xl font-bold mb-8">Featured Events</h2>
+    <h2 class="text-3xl font-bold mb-8 text-center">Featured Events</h2>
     <div class="grid md:grid-cols-3 gap-8">
-      <!-- Event Card -->
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?w=600" class="w-full h-48 object-cover" alt="Concert">
+      <!-- Event Cards -->
+      <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600" class="w-full h-48 object-cover" alt="Concert">
         <div class="p-5">
           <h3 class="text-xl font-semibold mb-2">Live Concert Night</h3>
-          <p class="text-gray-600 mb-4">Join us for a night filled with music and fun.</p>
-          <button class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Register</button>
+          <p class="text-gray-400 mb-4">Join us for a night filled with music and fun.</p>
+          <button class="glossy-btn w-full">Register</button>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600" class="w-full h-48 object-cover" alt="Workshop">
+      <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600" class="w-full h-48 object-cover" alt="Workshop">
         <div class="p-5">
           <h3 class="text-xl font-semibold mb-2">Tech Workshop</h3>
-          <p class="text-gray-600 mb-4">Learn new skills from industry experts.</p>
-          <button class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Register</button>
+          <p class="text-gray-400 mb-4">Learn new skills from industry experts.</p>
+          <button class="glossy-btn w-full">Register</button>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600" class="w-full h-48 object-cover" alt="Festival">
+      <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600" class="w-full h-48 object-cover" alt="Festival">
         <div class="p-5">
           <h3 class="text-xl font-semibold mb-2">Cultural Festival</h3>
-          <p class="text-gray-600 mb-4">Experience food, dance, and cultural performances.</p>
-          <button class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Register</button>
+          <p class="text-gray-400 mb-4">Experience food, dance, and cultural performances.</p>
+          <button class="glossy-btn w-full">Register</button>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=600" class="w-full h-48 object-cover" alt="Food Festival">
+      <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=600" class="w-full h-48 object-cover" alt="Food Carnival">
         <div class="p-5">
           <h3 class="text-xl font-semibold mb-2">Food Carnival</h3>
-          <p class="text-gray-600 mb-4">Taste cuisines from all around the world.</p>
-          <button class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Register</button>
+          <p class="text-gray-400 mb-4">Taste delicacies from around the world.</p>
+          <button class="glossy-btn w-full">Register</button>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600" class="w-full h-48 object-cover" alt="Meetup">
+      <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600" class="w-full h-48 object-cover" alt="Startup Meetup">
         <div class="p-5">
           <h3 class="text-xl font-semibold mb-2">Startup Meetup</h3>
-          <p class="text-gray-600 mb-4">Connect with entrepreneurs and investors.</p>
-          <button class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Register</button>
+          <p class="text-gray-400 mb-4">Network with entrepreneurs and investors.</p>
+          <button class="glossy-btn w-full">Register</button>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1485217988980-11786ced9454?w=600" class="w-full h-48 object-cover" alt="Sports">
+      <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600" class="w-full h-48 object-cover" alt="Sports Tournament">
         <div class="p-5">
           <h3 class="text-xl font-semibold mb-2">Sports Tournament</h3>
-          <p class="text-gray-600 mb-4">Cheer your team and enjoy live action sports.</p>
-          <button class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Register</button>
+          <p class="text-gray-400 mb-4">Compete in thrilling sports challenges.</p>
+          <button class="glossy-btn w-full">Register</button>
         </div>
       </div>
     </div>
   </section>
 
-  <script>
-    const slider = document.getElementById("slider");
-    const nextBtn = document.getElementById("next");
-    const prevBtn = document.getElementById("prev");
-    let index = 0;
-    const slides = slider.children.length;
+  <!-- About Section -->
+  <section id="about" class="bg-gray-800 py-16">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-6">About Us</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">We are ACE (Association of CSE), dedicated to bringing together students, professionals, and communities through engaging events, workshops, and cultural programs.</p>
+    </div>
+  </section>
 
-    function updateSlide() {
-      slider.style.transform = `translateX(-${index * 100}%)`;
+  <!-- Contact Section -->
+  <section id="contact" class="bg-gray-900 py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6 text-center">Contact Us</h2>
+      <form class="max-w-2xl mx-auto space-y-4">
+        <input type="text" placeholder="Your Name" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100">
+        <input type="email" placeholder="Your Email" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100">
+        <textarea placeholder="Your Message" rows="4" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100"></textarea>
+        <button class="glossy-btn w-full">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-950 text-gray-400 py-6 text-center border-t border-gray-800">
+    <p>&copy; 2025 ACE - Association of CSE. All rights reserved.</p>
+  </footer>
+
+  <!-- Slider Script -->
+  <script>
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) slide.classList.add('active');
+      });
     }
 
-    nextBtn.addEventListener("click", () => {
-      index = (index + 1) % slides;
-      updateSlide();
-    });
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
 
-    prevBtn.addEventListener("click", () => {
-      index = (index - 1 + slides) % slides;
-      updateSlide();
-    });
-
-    setInterval(() => {
-      index = (index + 1) % slides;
-      updateSlide();
-    }, 4000);
+    setInterval(nextSlide, 5000);
   </script>
 </body>
 </html>
