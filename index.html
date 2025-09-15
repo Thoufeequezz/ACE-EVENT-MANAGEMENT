@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACE Event Management</title>
+
+  <!-- Clerk SDK -->
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_cHJlc2VudC1mcm9nLTIyLmNsZXJrLmFjY291bnRzLmRldiQ"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
+  </script>
+
+  <!-- Tailwind + Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .logo-white { filter: brightness(0) invert(1); }
+    .hero-slide {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .hero-slide.active { opacity: 0.6; }
+
+    .glossy-btn {
+      border-radius: 10px;
+      background: linear-gradient(145deg,#3b82f6,#1e40af);
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid #1e3a8a;
+      box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.2),
+        0 3px 5px rgba(0,0,0,0.3);
+      transition: transform .2s, box-shadow .2s, border .2s;
+    }
+    .glossy-btn:hover {
+      transform: translateY(-1px);
+      border: 1px solid silver;
+      box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.3),
+        0 4px 6px rgba(0,0,0,0.4);
+    }
+    .glossy-btn-outline {
+      border-radius: 10px;
+      border: 2px solid transparent;
+      color: silver;
+      background: transparent;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+      transition: transform .2s, box-shadow .2s, border .2s, background .2s, color .2s;
+    }
+    .glossy-btn-outline:hover {
+      background: #3b82f6;
+      color: white;
+      border: 2px solid silver;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+  <!-- Navbar -->
+  <nav class="bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#">
+        <img src="acelogo.png" alt="ACE Logo" class="h-14 w-auto scale-125 logo-white">
+      </a>
+      <ul class="hidden md:flex space-x-8 font-medium">
+        <li><a href="#" class="hover:text-purple-400 transition">Home</a></li>
+        <li><a href="#events" class="hover:text-purple-400 transition">Events</a></li>
+        <li><a href="#about" class="hover:text-purple-400 transition">About</a></li>
+        <li><a href="#contact" class="hover:text-purple-400 transition">Contact</a></li>
+      </ul>
+
+      <!-- Auth Area -->
+      <div class="hidden md:flex space-x-4 items-center">
+        <!-- Clerk mounts here -->
+        <div id="clerk-user-button" class="hidden"></div>
+
+        <!-- Fallback buttons for visitors -->
+        <button id="login-fallback" class="glossy-btn-outline">Login</button>
+        <button id="signup-fallback" class="glossy-btn">Signup</button>
+      </div>
+      <button class="md:hidden text-gray-100 focus:outline-none">☰</button>
+    </div>
+  </nav>
+
+  <!-- Hero / Slider -->
+  <section class="relative h-[500px] flex items-center justify-center overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?w=1600" class="hero-slide active" alt="slide1">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600" class="hero-slide" alt="slide2">
+    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1600" class="hero-slide" alt="slide3">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-transparent"></div>
+    <div class="relative text-center px-6">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">Unforgettable Events by ACE</h1>
+      <p class="text-lg md:text-xl mb-6 text-gray-300">Workshops, Concerts, Festivals & more – all in one place.</p>
+      <div class="space-x-4">
+        <button class="glossy-btn">Explore Events</button>
+        <button class="glossy-btn-outline">Learn More</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Section -->
+  <section id="events" class="max-w-7xl mx-auto my-16 px-6">
+    <h2 class="text-3xl font-bold mb-8 text-center">Featured Events</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Sample Event Card -->
+      <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600" class="w-full h-48 object-cover" alt="Concert">
+        <div class="p-5">
+          <h3 class="text-xl font-semibold mb-2">Live Concert Night</h3>
+          <p class="text-gray-400 mb-4">Join us for a night filled with music and fun.</p>
+          <button class="glossy-btn w-full" onclick="requireAuth(() => alert('Registered!'))">Register</button>
+        </div>
+      </div>
+      <!-- Duplicate or add more event cards as needed -->
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="bg-gray-800 py-16">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-6">About Us</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">We are ACE (Association of CSE), dedicated to bringing together students, professionals, and communities through engaging events, workshops, and cultural programs.</p>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="bg-gray-900 py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6 text-center">Contact Us</h2>
+      <form class="max-w-2xl mx-auto space-y-4">
+        <input type="text" placeholder="Your Name" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100">
+        <input type="email" placeholder="Your Email" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100">
+        <textarea placeholder="Your Message" rows="4" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100"></textarea>
+        <button class="glossy-btn w-full">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-950 text-gray-400 py-6 text-center border-t border-gray-800">
+    <p>&copy; 2025 ACE - Association of CSE. All rights reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Hero slider
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+    function showSlide(i){slides.forEach((s,x)=>{s.classList.toggle('active', x===i);});}
+    setInterval(()=>{currentSlide=(currentSlide+1)%slides.length;showSlide(currentSlide);},5000);
+
+    // Clerk auth handling
+    window.addEventListener('load', async () => {
+      await Clerk.load();
+
+      if (Clerk.user) {
+        // User is signed in
+        document.getElementById('clerk-user-button').classList.remove('hidden');
+        document.getElementById('login-fallback').style.display = 'none';
+        document.getElementById('signup-fallback').style.display = 'none';
+        Clerk.mountUserButton(document.getElementById('clerk-user-button'));
+      } else {
+        // Not signed in: open modals on click
+        document.getElementById('login-fallback').onclick = () =>
+          Clerk.openSignIn({ afterSignInUrl: window.location.href });
+        document.getElementById('signup-fallback').onclick = () =>
+          Clerk.openSignUp({ afterSignUpUrl: window.location.href });
+      }
+    });
+
+    // Helper to require sign-in for certain actions
+    function requireAuth(action){
+      if (Clerk.user) { action(); }
+      else { Clerk.openSignIn({ afterSignInUrl: window.location.href }); }
+    }
+  </script>
+</body>
+</html>
