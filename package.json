@@ -1,0 +1,27 @@
+{
+  "name": "clerk_test",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
+    "@clerk/express": "^1.7.31",
+    "@getbrevo/brevo": "^3.0.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "oracledb": "^6.9.0",
+    "sib-api-v3-sdk": "^8.5.0",
+    "svix": "^1.76.1"
+  }
+}
