@@ -1,13 +1,12 @@
 // routes/homepage.js
 import { Router } from "express";
-import { events_list } from "../server.js";
-
+import { query } from "../database/connect_db.js";
 
 const router = Router();
 
 // Optional auth: detects logged-in users
 router.get("/", async (req, res) => {
-  
+    const events_list = await query(`SELECT * FROM Events`);
     // Render homepage for guests
     res.render("home", {
       title: "ACE Event Management",

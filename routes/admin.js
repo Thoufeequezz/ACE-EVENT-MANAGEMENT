@@ -1,14 +1,14 @@
 // routes/admin.js
 import { Router } from "express";
-import { events_list } from "../server.js";  // adjust to your DB exports
 import { query } from "../database/connect_db.js";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
   // TODO: Add real auth check 
-  const users = await query(`SELECT * FROM users `);
-  const registrations = await query(`SELECT * FROM events `);
+  const events_list = await query(`SELECT * FROM Events`);
+  //const users = await query(`SELECT * FROM users `);
+  //const registrations = await query(`SELECT * FROM events `);
   const totalEventsResult = await query(`SELECT COUNT(*) AS TOTAL_COUNT FROM events`);
   const totalRegResult = await query(`SELECT COUNT(*) AS TOTAL_PAY FROM payments`);
   const totalUsersResult = await query(`SELECT COUNT(*) AS TOTAL_USERS FROM users`);

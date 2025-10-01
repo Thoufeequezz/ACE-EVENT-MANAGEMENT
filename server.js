@@ -14,7 +14,6 @@ import eventsRoutes from "./routes/events.js"
 dotenv.config();
 await initPool();
 
-export const events_list = await query(`SELECT * FROM Events`);
 const app = express();
 const PORT = process.env.PORT || 3000;
  
