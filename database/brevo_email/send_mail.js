@@ -1,4 +1,4 @@
-import { initPool, query } from "../connect_db.js";
+import { query } from "../connect_db.js";
 import { sendNewsletter } from "./email_serv.js";
 import fs from "fs";
 
@@ -30,7 +30,7 @@ export async function send_mail({recipient_email = "to_all", htmlContent_path}) 
             return;
             }
 
-            const subject = "Welcome to ACE KMEA!";
+            const subject = "NEW EVENT ALERT! @ACE KMEA";
 
             const res = await sendNewsletter(recipients, subject, htmlContent);
             console.log("Emails sent successfully(newsletter)!", res);

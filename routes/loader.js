@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Redirecting...</title>
+      <title>Loading...</title>
       <script
         async
         crossorigin="anonymous"
@@ -27,35 +27,47 @@ router.get("/", (req, res) => {
           font-family: 'Poppins', sans-serif;
         }
         .loader {
-          width: 80px;
-          height: 80px;
+          display: flex;
+          gap: 8px;
+        }
+        .loader div {
+          width: 12px;
+          height: 12px;
+          background: #3b82f6;
           border-radius: 50%;
-          border: 8px solid;
-          border-color: #3b82f6 transparent #9333ea transparent;
-          animation: spin 1.2s linear infinite;
+          animation: pulse 0.6s infinite alternate;
         }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+        .loader div:nth-child(2) { animation-delay: 0.2s; }
+        .loader div:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pulse {
+          0% { transform: scale(0.6); opacity: 0.5; }
+          100% { transform: scale(1); opacity: 1; }
         }
+
         .loader-text {
-          margin-top: 20px;
+          margin-top: 16px;
           color: #e5e7eb;
-          font-size: 1.2rem;
+          font-size: 1rem;
           text-align: center;
         }
       </style>
     </head>
     <body>
       <div style="text-align:center;">
-        <div class="loader"></div>
-        <div class="loader-text">Redirecting...</div>
+        <div class="loader">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="loader-text">Loading...</div>
       </div>
+
       <script type="text/javascript">
         window.addEventListener("load", async () => {
           await Clerk.load();
           if (Clerk.user) {
-            window.location.href = "/admin"; // redirect logged-in user
+            window.location.href = "/admin";
           } else {
             window.location.href = "/home";
           }

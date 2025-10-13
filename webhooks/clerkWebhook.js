@@ -2,8 +2,8 @@ import express from "express";
 import { Webhook } from "svix";
 import {query} from "../database/connect_db.js"
 import { send_mail } from "../database/brevo_email/send_mail.js";
-const router = express.Router();
 
+const router = express.Router();
 router.post("/webhook",
     express.raw({ type: "application/json" }),
     async (req, res) =>{

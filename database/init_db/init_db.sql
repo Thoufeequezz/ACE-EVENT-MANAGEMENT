@@ -15,7 +15,7 @@ CREATE TABLE Events(
     Title VARCHAR2(200),
     Fee NUMBER(10,2),
     CreatedAt DATE DEFAULT SYSDATE,
-    Description VARCHAR2(500),
+    Description VARCHAR2(4000),
     NoOfSeats Number(5) CHECK (NoOfSeats >= 1),
     StartDate DATE,
     EndDate DATE,

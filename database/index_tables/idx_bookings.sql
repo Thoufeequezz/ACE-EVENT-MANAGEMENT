@@ -1,0 +1,2 @@
+CREATE INDEX idx_bookings_eventid ON BOOKINGS(EVENTID);
+CREATE INDEX idx_bookings_status ON BOOKINGS(BOOKINGSTATUS);

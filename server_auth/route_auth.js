@@ -8,7 +8,7 @@ export async function requireAdmin(req, res, next) {
 
     // Fetch Clerk user
     const user = await clerkClient.users.getUser(userId);
-    const clerkRole = user?.privateMetadata?.role;
+    const clerkRole = user?.privateMetadata?.role || null;
 
     // Optional: check your own database
     const dbRole = await ss_auth(userId);
@@ -17,9 +17,10 @@ export async function requireAdmin(req, res, next) {
       return next(); // allowed
     } else {
       return res.redirect("/home");
+      
     }
   } catch (err) {
     console.error(err);
-    return res.status(500).send("Server error");
+    return res.redirect("/");
   }
 }

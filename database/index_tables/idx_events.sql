@@ -1,0 +1,1 @@
+CREATE INDEX idx_event_title ON EVENTS(TITLE);

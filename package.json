@@ -15,6 +15,7 @@
     "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/express": "^1.7.31",
     "@getbrevo/brevo": "^3.0.1",
+    "@google/genai": "^1.22.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.2",
     "ejs": "^3.1.10",

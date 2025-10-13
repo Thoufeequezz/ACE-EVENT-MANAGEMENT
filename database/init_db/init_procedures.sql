@@ -1,0 +1,10 @@
+@ database\APIs\Users_pkg.sql ;
+@ database\APIs\Users_body.sql ;
+@ database\APIs\Payments_pkg.sql ;
+@ database\APIs\Payments_body.sql ;
+@ database\APIs\Events_pkg.sql ;
+@ database\APIs\Events_body.sql ;
+@ database\APIs\Bookings_pkg.sql ;
+@ database\APIs\Bookings_body.sql ;
+@ database\APIs\Admin_logs_pkg.sql ;
+@ database\APIs\Admin_logs_body.sql ;
