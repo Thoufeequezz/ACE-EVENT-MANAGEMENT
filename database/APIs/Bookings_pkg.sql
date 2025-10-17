@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE bookings_pkg AS
    PROCEDURE add_booking(
-      p_userid NUMBER,
+      p_userid VARCHAR2,
       p_eventid NUMBER,
       p_bookingstatus VARCHAR2,
       p_noofparticipants NUMBER,

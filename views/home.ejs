@@ -23,6 +23,9 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/main.css">
 
+    <!-- Razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   </head>
 
   <body id= home class="bg-gray-900 text-gray-100">
@@ -144,7 +147,7 @@
             <div class="p-5">
               <h3 class="text-xl font-semibold mb-2"><%= event.TITLE %></h3>
               <p class="text-gray-300 mb-4">
-                Fee: ₹<%= event.FEE %> | Status: <%= event.EVENTSTATUS %>
+                Fee: <%= event.FEE === 0 ? "FREE" : "₹" + event.FEE %> | Status: <%= event.EVENTSTATUS %>
               </p>
               <p class="text-gray-300 mb-4">
                 Date: <%= new Date(event.STARTDATE).toLocaleDateString() %> - <%= new Date(event.ENDDATE).toLocaleDateString() %>
@@ -154,6 +157,7 @@
               </p>
               <button
                 class="glossy-btn w-full view-btn"
+                data-event-id="<%= event.EVENTID %>"
                 data-title="<%= event.TITLE %>"
                 data-desc="<%= event.DESCRIPTION %>"
                 data-image="<%= event.IMAGE || 'event_images/default.png' %>"
@@ -189,9 +193,21 @@
             <p id="modalVenue"></p>
           </div>
 
-          <button id="registerBtn" class="glossy-btn w-full py-3 text-lg font-semibold hover:scale-105 transition-transform">
+        <!-- Terms & Register -->
+        <div class="flex flex-col gap-4 mt-4">
+          <label class="inline-flex items-center cursor-pointer select-none gap-3">
+            <input type="checkbox" id="agreeTerms" class="w-5 h-5 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg transition duration-200 checked:bg-gray-500 checked:border-gray-400">
+            
+            <span class="text-gray-300">
+              I agree to the terms and conditions mentioned above.</a>
+            </span>
+          </label>
+
+          <button id="registerBtn" class="glossy-btn w-full py-3 text-lg font-semibold hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed" disabled>
             Register
           </button>
+        </div>
+
         </div>
       </div>
     </div>
@@ -216,10 +232,36 @@
         </form>
       </div>
     </section>
+
+    <!-- Logged-in User Info -->
+    <div id="userInfo" class="max-w-7xl mx-auto px-6 py-4 text-center text-gray-300 hidden">
+      Logged in as: <span id="userId"></span>
+    </div>
     
     <footer class="bg-gray-950 text-gray-400 py-6 text-center border-t border-gray-800">
       <p>&copy; <%= new Date().getFullYear() %> ACE - Association of CSE. All rights reserved.</p>
     </footer>
+
+        <!-- Alert Overlay -->
+    <div id="alertOverlay" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div id="alertBox" class="bg-gray-800 text-gray-100 p-6 rounded-2xl shadow-xl text-center max-w-sm w-full">
+        <h3 id="alertTitle" class="text-xl font-semibold mb-2">Alert</h3>
+        <p id="alertMessage" class="text-gray-300 mb-4">This is a sample message.</p>
+        <button id="alertClose" class="glossy-btn px-4 py-2">OK</button>
+      </div>
+    </div>
+
+    <!-- Confirm Overlay -->
+    <div id="confirmOverlay" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div id="confirmBox" class="bg-gray-800 text-gray-100 p-6 rounded-2xl shadow-xl text-center max-w-sm w-full">
+        <h3 id="confirmTitle" class="text-xl font-semibold mb-2">Confirm</h3>
+        <p id="confirmMessage" class="text-gray-300 mb-4">Are you sure?</p>
+        <div class="flex justify-center gap-4">
+          <button id="confirmYes" class="glossy-btn px-4 py-2">Yes</button>
+          <button id="confirmNo" class="glossy-btn-outline px-4 py-2">No</button>
+        </div>
+      </div>
+    </div>
 
     <script src="/javascript/signup_btn_init.js" type="module"></script>
     <script src="javascript/main.js"></script>

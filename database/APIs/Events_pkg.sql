@@ -34,7 +34,8 @@ CREATE OR REPLACE PACKAGE events_pkg AS
       p_eventstatus     IN  VARCHAR2,
       p_eventtype       IN  VARCHAR2,
       p_eventcategory   IN  VARCHAR2,
-      p_venue           IN  VARCHAR2
+      p_venue           IN  VARCHAR2,
+      p_image           IN  VARCHAR2
    );
 
    -- Delete

@@ -72,3 +72,13 @@ scroll-behavior: smooth;
         to { opacity: 1; transform: translateY(0); }
       }
       .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+
+@keyframes pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#alertBox {
+  animation: pop 0.25s ease-out;
+}
+

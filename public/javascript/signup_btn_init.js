@@ -16,6 +16,8 @@ window.addEventListener('load', async () => {
             Clerk.openSignUp({ afterSignUpUrl: "/" });        
 
     } else {
+        window.userId = Clerk.user.id;
+
         document.getElementById('clerk-user-button').classList.remove('hidden');
         document.getElementById('login-fallback').style.display = 'none';
         document.getElementById('signup-fallback').style.display = 'none';
@@ -26,5 +28,10 @@ window.addEventListener('load', async () => {
         document.getElementById('login-fallback-mobile').style.display = 'none';
         document.getElementById('signup-fallback-mobile').style.display = 'none';
         Clerk.mountUserButton(userBtn);
+
+        const userInfoDiv = document.getElementById("userInfo");
+        const userIdSpan = document.getElementById("userId");
+        userIdSpan.textContent = window.userId; 
+        userInfoDiv.classList.remove("hidden");
     }
 });

@@ -85,6 +85,7 @@ document.querySelectorAll('.view-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     // Get event details from data attributes
     const event = {
+      eventId: btn.dataset.eventId,
       TITLE: btn.dataset.title,
       DESCRIPTION: btn.dataset.desc,
       IMAGE: btn.dataset.image,
@@ -98,33 +99,20 @@ document.querySelectorAll('.view-btn').forEach(btn => {
     // Populate modal content
     document.getElementById('modalTitle').textContent = event.TITLE;
     document.getElementById('modalDesc').textContent = event.DESCRIPTION;
-    document.getElementById('modalFee').textContent = `Fee: ₹${event.FEE || '0'}`;
+    document.getElementById('modalFee').textContent = `Fee: ${event.FEE === "0" ? "FREE" : "₹" + event.FEE || '0'}`;
     document.getElementById('modalDate').textContent = `Date: ${event.STARTDATE}${event.ENDDATE ? ' - ' + event.ENDDATE : ''}`;
     document.getElementById('modalVenue').textContent = `Venue: ${event.VENUE || ''} | Type: ${event.EVENTTYPE || ''}`;
+
+    const registerBtn = document.getElementById("registerBtn");
+
+    // Set the event ID in the button's dataset
+    registerBtn.dataset.eventId = event.eventId;
 
     // Show modal
     const modal = document.getElementById('eventModal');
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // prevent background scroll
 
-    // Register button functionality
-    const registerBtn = document.getElementById('registerBtn');
-    registerBtn.onclick = () => {
-      requireAuth(() => {
-        // Example: send registration request
-        fetch('/api/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title: event.TITLE }) // you can replace with event ID
-        })
-        .then(res => {
-          if (res.ok) alert('Registered successfully!');
-          else alert('Registration failed');
-        })
-        .catch(() => alert('Network error'));
-        closeEventModal();
-      });
-    };
   });
 });
 
@@ -142,6 +130,109 @@ document.getElementById('closeModal').addEventListener('click', closeEventModal)
 document.getElementById('eventModal').addEventListener('click', e => {
   if (e.target.id === 'eventModal') closeEventModal();
 });
+
+////////////////////////////////
+//ALERT MESSAGE
+////////////////////////////////
+
+function showAlert(title, message) {
+  const overlay = document.getElementById("alertOverlay");
+  const titleEl = document.getElementById("alertTitle");
+  const messageEl = document.getElementById("alertMessage");
+
+  titleEl.textContent = title;
+  messageEl.textContent = message;
+
+  overlay.classList.remove("hidden");
+  overlay.classList.add("flex");
+
+  // Close on button click
+  document.getElementById("alertClose").onclick = () => {
+    overlay.classList.add("hidden");
+    overlay.classList.remove("flex");
+  };
+}
+
+/////////////////////////////////////
+//SHOW CONFIRM
+/////////////////////////////////////
+
+function showConfirm(title, message) {
+  return new Promise((resolve) => {
+    const overlay = document.getElementById("confirmOverlay");
+    const titleEl = document.getElementById("confirmTitle");
+    const messageEl = document.getElementById("confirmMessage");
+    const yesBtn = document.getElementById("confirmYes");
+    const noBtn = document.getElementById("confirmNo");
+
+    titleEl.textContent = title;
+    messageEl.textContent = message;
+
+    overlay.classList.remove("hidden");
+    overlay.classList.add("flex");
+
+    const cleanup = (result) => {
+      overlay.classList.add("hidden");
+      overlay.classList.remove("flex");
+      yesBtn.onclick = noBtn.onclick = null;
+      resolve(result);
+    };
+
+    yesBtn.onclick = () => cleanup(true);
+    noBtn.onclick = () => cleanup(false);
+  });
+}
+
+///////////////////////////////////////////
+//REGISTER BUTTON
+///////////////////////////////////////////
+
+// Checkbox & Button logic
+const checkbox = document.getElementById('agreeTerms');
+const registerBtn = document.getElementById('registerBtn');
+
+checkbox.addEventListener('change', () => {
+  registerBtn.disabled = !checkbox.checked;
+});
+
+// Register button click
+registerBtn.onclick = async () => {
+  requireAuth(async ()=> {if (!window.userId) {
+    alert("Please log in first!");
+    return;
+  }
+
+  const eventId = registerBtn.dataset.eventId;
+
+  try {
+    console.log(eventId);
+    const response = await fetch('/register-event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: window.userId,
+        eventId: eventId
+      })
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      showAlert("INFO", result.message || "Successfully registered!");
+    } else {
+      showAlert(result.error || "Registration failed!");
+    }
+    } catch (err) {
+      console.error(err);
+      showAlert("OOPS!", "Something went wrong. Try again later.");
+    }
+    })};
+
+        
+
+
 
 
 

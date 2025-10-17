@@ -33,7 +33,7 @@ export async function send_mail({recipient_email = "to_all", htmlContent_path}) 
             const subject = "NEW EVENT ALERT! @ACE KMEA";
 
             const res = await sendNewsletter(recipients, subject, htmlContent);
-            console.log("Emails sent successfully(newsletter)!", res);
+            console.log("Emails sent via newsletter");
         } catch (err) {
             console.error("Error sending emails:", err);
         }
@@ -42,7 +42,7 @@ export async function send_mail({recipient_email = "to_all", htmlContent_path}) 
         try {
             const subject = "Welcome to ACE KMEA!";
             const res = await sendNewsletter([recipient_email], subject, htmlContent);
-            console.log("Emails sent successfully (induvidual)!", res);
+            console.log("Emails sent via induvidual ", res);
         } catch (err) {
             console.error("Error sending emails:", err);
         }

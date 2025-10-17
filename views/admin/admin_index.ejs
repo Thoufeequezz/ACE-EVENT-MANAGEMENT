@@ -89,7 +89,7 @@
                   <div class="p-5">
                   <h3 class="text-xl font-semibold mb-2"><%= event.TITLE %></h3>
                   <p class="text-gray-300 mb-4">
-                      Fee: ₹<%= event.FEE %> | Status: <%= event.EVENTSTATUS %>
+                      Fee: <%= event.FEE === 0 ? "FREE" : "₹" + event.FEE %> | Status: <%= event.EVENTSTATUS %>
                   </p>
                   <p class="text-gray-300 mb-4">
                       Date: <%= new Date(event.STARTDATE).toLocaleDateString() %> - <%= new Date(event.ENDDATE).toLocaleDateString() %>
@@ -162,6 +162,11 @@
             </div>
         </section>
 
+        <!-- Logged-in User Info -->
+        <div id="userInfo" class="max-w-7xl mx-auto px-6 py-4 text-center text-gray-300 hidden">
+          Logged in as: <span id="userId"></span>
+        </div>
+
         <footer class="bg-gray-950 text-gray-400 py-6 text-center border-t border-gray-800">
             <p>&copy; <%= new Date().getFullYear() %> ACE - Association of CSE. All rights reserved.</p>
         </footer>
@@ -186,7 +191,7 @@
             <p id="dashTotalUsers" class="text-3xl font-bold"><%= totalUsers %></p>
           </div>
       </div>
-
+      
       <!-- Event Management -->
       <div class="mb-12">
           <h2 class="text-2xl font-bold mb-4">Manage Events</h2>
@@ -210,16 +215,33 @@
       </div>
 
       <!-- Registered Users Viewer -->
-      <div class="mb-12">
-          <h2 class="text-2xl font-bold mb-4">Registrations by Event</h2>
-          <select id="dashEventSelector" class="p-2 bg-gray-700 rounded text-gray-100 mb-4">
-          <option value="">Select Event</option>
-          </select>
-          <ul id="dashRegistrations" class="space-y-2">
-          </ul>
-      </div>
+      <div class="mb-12 bg-gray-900 rounded-2xl p-6 shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-white text-left border-b border-gray-700 pb-3">
+          Registrations by Event
+        </h2>
 
-      <button class="glossy-btn-outline" onclick="closeDashboard()">Back to Site</button>
+        <!-- Event Selector -->
+        <div class="mb-6">
+          <select id="dashEventSelector" class="w-full p-3 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+            <option value="" disabled selected>Select an Event</option>
+          </select>
+        </div>
+
+        <!-- Registrations List -->
+        <ul id="dashRegistrations" class="space-y-3 max-h-96 overflow-y-auto border-t border-gray-700 pt-3">
+          <!-- Example item (will be generated dynamically) -->
+          <!--
+          <li class="bg-gray-800 p-4 rounded-lg flex justify-between items-center hover:bg-gray-700 transition">
+            <span class="font-medium text-gray-100">John Doe (CSE, Sem 4)</span>
+            <span class="text-gray-400">#12345</span>
+          </li>
+          -->
+        </ul>
+
+        <!-- Optional: Empty state -->
+        <p id="registrationsEmpty" class="text-gray-400 text-center mt-4 hidden">Select an event to see registrations.</p>
+      </div>
+      
     </div>
 
     <!-- Add New Event Modal -->
@@ -323,8 +345,143 @@
       </div>
     </div>
 
+    <!-- Edit Event Modal -->
+    <div id="editEventModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+      <div class="bg-gray-900 w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl p-8 relative animate-fadeIn">
+
+        <!-- Close button -->
+        <button onclick="closeEditEventModal()" class="absolute top-4 right-6 text-gray-400 hover:text-white text-3xl font-bold">&times;</button>
+
+        <h2 class="text-3xl font-bold mb-8 text-center text-white">Edit Event</h2>
+
+        <form id="editEventForm" class="space-y-6" enctype="multipart/form-data">
+
+          <!-- Hidden Event ID -->
+          <input type="hidden" id="editEventId" name="eventId">
+
+          <!-- Title -->
+          <div>
+            <label for="editTitle" class="block mb-1 text-gray-200 font-semibold">Event Title</label>
+            <input id="editTitle" name="title" type="text"
+                  placeholder="e.g. Tech Fest 2025"
+                  class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500" required>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="editDescription" class="block mb-1 text-gray-200 font-semibold">Description</label>
+            <textarea id="editDescription" name="description" rows="4"
+                      placeholder="Enter detailed event description"
+                      class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500" required></textarea>
+          </div>
+
+          <!-- Fee -->
+          <div>
+            <label for="editFee" class="block mb-1 text-gray-200 font-semibold">Fee</label>
+            <input id="editFee" name="fee" type="number"
+                  placeholder="e.g. 100"
+                  class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500" required>
+          </div>
+
+          <!-- Dates -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label for="editStartDate" class="block mb-1 text-gray-200 font-semibold">Start Date</label>
+              <input id="editStartDate" name="startDate" type="date"
+                    class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label for="editEndDate" class="block mb-1 text-gray-200 font-semibold">End Date</label>
+              <input id="editEndDate" name="endDate" type="date"
+                    class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500" required>
+            </div>
+          </div>
+
+          <!-- Venue -->
+          <div>
+            <label for="editVenue" class="block mb-1 text-gray-200 font-semibold">Venue</label>
+            <input id="editVenue" name="venue" type="text"
+                  placeholder="e.g. Main Auditorium"
+                  class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500" required>
+          </div>
+
+          <!-- Event Type -->
+          <div>
+            <label for="editType" class="block mb-1 text-gray-200 font-semibold">Event Type</label>
+            <input id="editType" name="type" type="text"
+                  placeholder="e.g. Workshop, Seminar, Festival"
+                  class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500" required>
+          </div>
+
+          <!-- Image Upload + Preview -->
+          <div>
+            <label class="block mb-2 text-gray-200 font-semibold">Event Image</label>
+
+            <div class="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0 items-center">
+              <!-- Drop Zone -->
+              <div id="editDropZone"
+                  class="flex flex-col items-center justify-center w-full md:w-1/2 h-40 border-2 border-dashed border-gray-600 rounded-xl cursor-pointer bg-gray-800 hover:bg-gray-700 transition text-center">
+                <svg class="w-12 h-12 mb-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M7 16V4a1 1 0 011-1h8a1 1 0 011 1v12m-4-4l-4 4h8l-4-4z"/>
+                </svg>
+                <p class="text-gray-300"><span class="font-semibold">Drag & Drop</span> or Click to Upload</p>
+                <p class="text-gray-400 text-sm">PNG, JPG up to 5 MB</p>
+                <input id="editImage" name="image" type="file" accept="image/*" class="hidden">
+              </div>
+
+              <!-- Image Preview -->
+              <div id="editImagePreview" class="w-full md:w-1/2 flex items-center justify-center">
+                <img src="https://68d345140c01626cd941b210--incandescent-blancmange-27e8c3.netlify.app/ace_email_logo.png"
+                    alt="Preview"
+                    class="max-h-40 rounded-xl shadow-lg border border-gray-700 object-cover" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-end space-x-4 pt-4">
+            <button type="button" onclick="closeEditEventModal()"
+                    class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-lg">Cancel</button>
+            <button type="submit"
+                    class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-lg">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Alert Overlay -->
+    <div id="alertOverlay" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div id="alertBox" class="bg-gray-800 text-gray-100 p-6 rounded-2xl shadow-xl text-center max-w-sm w-full">
+        <h3 id="alertTitle" class="text-xl font-semibold mb-2">Alert</h3>
+        <p id="alertMessage" class="text-gray-300 mb-4">This is a sample message.</p>
+        <button id="alertClose" class="glossy-btn px-4 py-2">OK</button>
+      </div>
+    </div>
+
+    <!-- Confirm Overlay -->
+    <div id="confirmOverlay" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div id="confirmBox" class="bg-gray-800 text-gray-100 p-6 rounded-2xl shadow-xl text-center max-w-sm w-full">
+        <h3 id="confirmTitle" class="text-xl font-semibold mb-2">Confirm</h3>
+        <p id="confirmMessage" class="text-gray-300 mb-4">Are you sure?</p>
+        <div class="flex justify-center gap-4">
+          <button id="confirmYes" class="glossy-btn px-4 py-2">Yes</button>
+          <button id="confirmNo" class="glossy-btn-outline px-4 py-2">No</button>
+        </div>
+      </div>
+    </div>
+
     <script src="javascript/admin/dashboard.js"></script>
-    <script src="javascript/admin/preview_img.js"></script>
+    <script type="module">
+      import { setupImagePreview } from '/javascript/admin/preview_img.js';
+
+      // For Add Event modal
+      setupImagePreview('dropZone', 'image', '#imagePreview img');
+
+      // For Edit Event modal
+      setupImagePreview('editDropZone', 'editImage', '#editImagePreview img');
+    </script>
     <script src="javascript/admin/mount_ui.js" type="module"></script>
     <script src="javascript/main.js"></script>
 

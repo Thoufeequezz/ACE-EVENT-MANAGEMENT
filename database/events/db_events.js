@@ -54,3 +54,48 @@ export async function create_event(
         image:          IMAGE
     }, { autoCommit: true });
 }
+
+/**
+ * Updates an existing event in the system.
+ * @param {number}  EVENTID        
+ * @param {string}  TITLE          
+ * @param {number}  FEE            
+ * @param {string}  DESCRIPTION    
+ * @param {number}  NOOFSEATS      
+ * @param {Date|string} STARTDATE  
+ * @param {Date|string} ENDDATE    
+ * @param {string}  EVENTSTATUS    
+ * @param {string}  EVENTTYPE      
+ * @param {string}  EVENTCATEGORY  
+ * @param {string}  VENUE          
+ * @returns {Promise<void>}
+ */
+export async function edit_event(
+    EVENTID,
+    TITLE,
+    FEE,
+    DESCRIPTION,
+    NOOFSEATS,
+    STARTDATE,
+    ENDDATE,
+    EVENTSTATUS,
+    EVENTTYPE,
+    EVENTCATEGORY,
+    VENUE,
+    IMAGE
+) {
+    await query("./database/API_calls/edit_event.sql", {
+        eventid:        EVENTID,
+        title:          TITLE,
+        fee:            FEE,
+        description:    DESCRIPTION,
+        noofseats:      NOOFSEATS,
+        startdate:      STARTDATE,
+        enddate:        ENDDATE,
+        eventstatus:    EVENTSTATUS,
+        eventtype:      EVENTTYPE,
+        eventcategory:  EVENTCATEGORY,
+        venue:          VENUE,
+        image:          IMAGE
+    }, { autoCommit: true });
+}

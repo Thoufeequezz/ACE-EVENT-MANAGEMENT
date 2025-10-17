@@ -49,22 +49,25 @@ CREATE OR REPLACE PACKAGE BODY events_pkg AS
       p_eventstatus     IN  VARCHAR2,
       p_eventtype       IN  VARCHAR2,
       p_eventcategory   IN  VARCHAR2,
-      p_venue           IN  VARCHAR2
+      p_venue           IN  VARCHAR2,
+      p_image           IN  VARCHAR2   
    ) IS
    BEGIN
-      UPDATE Events
-         SET Title        = p_title,
-             Fee          = p_fee,
-             Description  = p_description,
-             NoOfSeats    = p_noofseats,
-             StartDate    = p_startdate,
-             EndDate      = p_enddate,
-             EventStatus  = p_eventstatus,
-             EventType    = p_eventtype,
-             EventCategory= p_eventcategory,
-             Venue        = p_venue
-       WHERE EventId      = p_eventid;
+         UPDATE Events
+            SET Title        = p_title,
+               Fee          = p_fee,
+               Description  = p_description,
+               NoOfSeats    = p_noofseats,
+               StartDate    = p_startdate,
+               EndDate      = p_enddate,
+               EventStatus  = p_eventstatus,
+               EventType    = p_eventtype,
+               EventCategory= p_eventcategory,
+               Venue        = p_venue,
+               Image        = NVL(p_image, Image)  
+         WHERE EventId      = p_eventid;
    END update_event;
+
 
 
    PROCEDURE delete_event(

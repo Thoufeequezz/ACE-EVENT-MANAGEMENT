@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><%= title %></title>
+<title>TEST EVENT 13</title>
 <style>
   /* Reset & basic styles */
   body, html { margin:0; padding:0; font-family: 'Poppins', Arial, sans-serif; background:#f4f4f7; }
@@ -99,23 +99,21 @@
 
     <!-- Header -->
     <div class="email-header">
-       <%= title %>
+       TEST EVENT 13
     </div>
 
     <!-- Content -->
     <div class="email-content">
-      <div class="event-detail"><strong>Venue:</strong> <%= venue %></div>
-      <div class="event-detail"><strong>Date:</strong> <%= startDate %> To <%= endDate %></div>
-      <% if(fee && fee != 0){ %>
-        <div class="event-detail"><strong>Fee:</strong> ₹<%= fee %></div>
-      <% } else if(fee == 0){ %>
-        <div class="event-detail"><strong>Fee:</strong> FREE</div>
-      <% } %>
+      <div class="event-detail"><strong>Venue:</strong> KMEA</div>
+      <div class="event-detail"><strong>Date:</strong> 2025-10-18 To 2025-10-20</div>
+      
+        <div class="event-detail"><strong>Fee:</strong> ₹1</div>
+      
 
-      <div class="event-description"><%= description %></div>
+      <div class="event-description">TEST</div>
 
       <p style="text-align:center;">
-        <a href="<%= eventLink %>" class="btn-primary">View Event</a>
+        <a href="https://yourwebsite.com/events/TEST%20EVENT%2013" class="btn-primary">View Event</a>
       </p>
     </div>
 
