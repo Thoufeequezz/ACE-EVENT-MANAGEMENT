@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEST EVENT 03</title>
+<style>
+  /* Reset & basic styles */
+  body, html { margin:0; padding:0; font-family: 'Poppins', Arial, sans-serif; background:#f4f4f7; }
+  img { border:0; display:block; outline:none; text-decoration:none; max-width:100%; }
+
+  /* Container */
+  .email-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+  }
+
+  /* Header */
+  .email-header {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* Hero image */
+  .hero-img {
+    width: 100%;
+    border-radius: 0 0 16px 16px;
+    margin-bottom: 30px;
+  }
+
+  /* Content */
+  .email-content {
+    padding: 30px 25px;
+    color: #333;
+  }
+
+  .event-detail {
+    margin-bottom: 16px;
+  }
+
+  .event-detail strong {
+    color: #2575fc;
+    font-weight: 600;
+  }
+
+  .event-description {
+    line-height: 1.6;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 25px;
+  }
+
+  /* Button */
+  .btn-primary {
+    display: inline-block;
+    padding: 14px 28px;
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    color: #ffffff !important;
+    border-radius: 8px;
+    text-decoration: none !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Footer */
+  .email-footer {
+    text-align: center;
+    padding: 25px 20px;
+    font-size: 12px;
+    color: #888;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  /* Responsive */
+  @media (max-width: 620px) {
+    .email-header { font-size: 22px; padding: 30px 15px; }
+    .email-content { padding: 20px 15px; }
+    .btn-primary { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+  <div class="email-container">
+
+    <!-- Header -->
+    <div class="email-header">
+       TEST EVENT 03
+    </div>
+
+    <!-- Content -->
+    <div class="email-content">
+      <div class="event-detail"><strong>Venue:</strong> KMEA</div>
+      <div class="event-detail"><strong>Date:</strong> 2025-11-08 To 2025-11-09</div>
+      
+        <div class="event-detail"><strong>Fee:</strong> ₹200</div>
+      
+
+      <div class="event-description">This is a test event</div>
+
+      <p style="text-align:center;">
+        <a href="https://yourwebsite.com/events/TEST%20EVENT%2003" class="btn-primary">View Event</a>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="email-footer">
+      This is an automated newsletter from ACE KMEA - Association of CSE KMEA. Please do not reply.
+    </div>
+  </div>
+</body>
+</html>
